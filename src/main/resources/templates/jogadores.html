@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<body>
+<th:block layout:fragment="conteudo">
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="row valign-wrapper">
+            <div class="col s8">
+                <h3>Gerenciar Jogadores</h3>
+            </div>
+            <div class="col s4">
+                <a href="/times"
+                   class="valign btn-large waves-effect waves-light blue right">
+                    Gerenciar Times
+                </a>
+            </div>
+        </div>
+        <!-- CONTENT FORM -->
+        <div class="row">
+            <form action="/jogadores/salvar" method="post">
+                <div class="input-field col s4">
+                    <input placeholder="Nome do Jogador" id="nome" name="nome" class="validate" />
+                </div>
+
+                <div class="input-field col s4">
+                    <input placeholder="Idade do Jogador" id="idade" name="idade" class="validate" />
+                </div>
+                <div class="input-field col s4">
+                    <button class="btn waves-effect waves-light blue" type="submit" name="action">
+                        Adicionar Jogador
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- CONTENT -->
+        <div class="row">
+            <h5>Jogadores Cadastrados</h5>
+            <table class="striped">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Time que pertence</th>
+                    <th>Excluir Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="jog : ${jogadores}">
+                        <td th:text="${jog.name}">Czar</td>
+                        <td th:if="${jog.team != null and jog.team.name != null}" th:text="${jog.team.name}"></td>
+                        <td th:unless="${jog.team}">Sem time</td>
+                        <td>
+                            <a class="waves-effect waves-teal btn-flat red-text" href="#">X</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>

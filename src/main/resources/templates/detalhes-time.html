@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<body>
+<th:block layout:fragment="conteudo">
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="row valign-wrapper">
+            <div class="col s6">
+                <h3>Detalhes de <i th:text="${time.name}"></i></h3>
+            </div>
+            <div class="col s6">
+                <a href="/times" class="valign btn-large waves-effect waves-light teal left">
+                    Gerenciar Times
+                </a>
+                <a href="/jogadores" class="valign btn-large waves-effect waves-light teal right">
+                    Gerenciar Jogadores
+                </a>
+            </div>
+        </div>
+        <!-- FORM -->
+        <div class="row">
+            <form th:action="@{${'/times/'+ time.id +'/add-jogador'}}" method="post">
+                <div class="col s8">
+                    <div class="input-field">
+                        <select name="idJog">
+                            <option value="" disabled="true" selected="true">Escolha um Jogador Sem Time</option>
+                            <option th:each="jogadorSemTime : ${jogadoresSemTime}"
+                                    th:value="${jogadorSemTime.id}"
+                                    th:text="${jogadorSemTime.name}">
+                            </option>
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col s4">
+                    <div class="input-field">
+                        <button class="btn waves-effect waves-light" type="submit" name="action">
+                            Adicionar Jogador ao Time
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="row">
+            <h5>Jogadores do Time</h5>
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Idade</th>
+                        <th>Excluir do Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="jog : ${time.players}">
+                        <td th:text="${jog.name}">Czar</td>
+                        <td th:text="${jog.age}">20</td>
+                        <td>
+                            <a class="waves-effect waves-teal btn-flat red-text"
+                               th:href="@{${'/times/'+ time.id + '/remover-jogador/'+ jog.id}}">X</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>
