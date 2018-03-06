@@ -27,10 +27,13 @@ public class TeamController {
     }
 
     @GetMapping("/{id}")
-    ModelAndView details(ModelAndView model, @PathVariable Long id) {
+    ModelAndView details(ModelAndView model, @PathVariable Long id, @RequestParam(required=false) String erro) {
         model.setViewName(Constants.DETAILS);
         model.addObject("time", teamServices.getTeamById(id));
         model.addObject("jogadoresSemTime", playerServices.getAllWithoutTeam());
+
+        model.addObject("erro", erro);
+
         return model;
     }
 
@@ -47,8 +50,13 @@ public class TeamController {
     }
 
     @PostMapping("/{id}/add-jogador")
-    public ModelAndView addPlayer(@PathVariable Long id, @RequestParam Long idJog) {
-        teamServices.addPlayerAoTime(idJog, id);
-        return new ModelAndView("redirect:/times/" + id);
+    public ModelAndView addPlayer(@PathVariable Long id, @RequestParam Long idJog, ModelAndView model) {
+        boolean itsOk = teamServices.addPlayerAoTime(idJog, id);
+        if(!itsOk){
+            String err = "O time já está completo.";
+            model.addObject("erro", err);
+        }
+        model.setViewName("redirect:/times/" + id);
+        return model;
     }
 }

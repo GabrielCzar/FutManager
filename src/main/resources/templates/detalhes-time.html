@@ -21,6 +21,13 @@
                 </a>
             </div>
         </div>
+
+        <div th:if="${erro}" class="row">
+            <div class="chip red white-text">
+                <span th:text="${erro}"></span>
+            </div>
+        </div>
+
         <!-- FORM -->
         <div class="row">
             <form th:action="@{${'/times/'+ time.id +'/add-jogador'}}" method="post">

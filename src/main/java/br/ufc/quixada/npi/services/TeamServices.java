@@ -35,11 +35,14 @@ public class TeamServices {
         return teamRepository.findOne(id);
     }
 
-    public void addPlayerAoTime(Long idJog, Long idTime) {
+    public boolean addPlayerAoTime(Long idJog, Long idTime) {
         Team team = teamRepository.findOne(idTime);
+        if (team.getPlayers().size() == 7)
+            return false;
         Player player = playerServices.getPlayer(idJog);
         player.setTeam(team);
         team.getPlayers().add(player);
         teamRepository.saveAndFlush(team);
+        return true;
     }
 }
